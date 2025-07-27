@@ -1,0 +1,17 @@
+<!-- add_cgpa.html -->
+{% extends "layout.html" %}
+{% block title %}Add CGPA{% endblock %}
+{% block content %}
+<h2 class="text-center mb-4">Add CGPA</h2>
+<form method="POST" class="mx-auto" style="max-width: 500px;">
+  <div class="mb-3">
+    <label>Semester</label>
+    <input type="number" class="form-control" name="semester" required>
+  </div>
+  <div class="mb-3">
+    <label>GPA</label>
+    <input type="text" class="form-control" name="gpa" required>
+  </div>
+  <button type="submit" class="btn btn-success w-100">Save</button>
+</form>
+{% endblock %}

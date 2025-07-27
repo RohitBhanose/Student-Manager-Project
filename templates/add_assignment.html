@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Add Assignment{% endblock %}
+{% block content %}
+<h2 class="text-center mb-4">Add Assignment</h2>
+<form method="POST" class="mx-auto" style="max-width: 500px;">
+  <div class="mb-3">
+    <label>Title</label>
+    <input type="text" class="form-control" name="title" required>
+  </div>
+  <div class="mb-3">
+    <label>Deadline</label>
+    <input type="date" class="form-control" name="deadline" required>
+  </div>
+  <div class="form-check mb-3">
+    <input type="checkbox" class="form-check-input" name="submitted" value="yes" id="submitted">
+    <label class="form-check-label" for="submitted">Submitted</label>
+  </div>
+  <div class="mb-3">
+    <label>Status:</label>
+    <span id="status-icon" class="ms-2">
+      <!-- Icon will be updated by JavaScript -->
+    </span>
+  </div>
+  <button type="submit" class="btn btn-warning w-100">Save</button>
+</form>
+
+<script>
+  const checkbox = document.querySelector('input[name="submitted"]');
+  const statusIcon = document.getElementById('status-icon');
+
+  function updateIcon() {
+    if (checkbox.checked) {
+      statusIcon.innerHTML = '<span class="text-success">&#10003; Submitted</span>'; // ✓
+    } else {
+      statusIcon.innerHTML = '<span class="text-danger">&#10007; Not Submitted</span>'; // ✗
+    }
+  }
+
+  checkbox.addEventListener('change', updateIcon);
+  window.addEventListener('DOMContentLoaded', updateIcon);
+</script>
+{% endblock %}

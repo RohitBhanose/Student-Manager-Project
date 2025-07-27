@@ -1,0 +1,21 @@
+<!-- add_attendance.html -->
+{% extends "layout.html" %}
+{% block title %}Add Attendance{% endblock %}
+{% block content %}
+<h2 class="text-center mb-4">Add Attendance</h2>
+<form method="POST" class="mx-auto" style="max-width: 500px;">
+  <div class="mb-3">
+    <label>Subject</label>
+    <input type="text" class="form-control" name="subject" required>
+  </div>
+  <div class="mb-3">
+    <label>Classes Attended</label>
+    <input type="number" class="form-control" name="attended" required>
+  </div>
+  <div class="mb-3">
+    <label>Total Classes</label>
+    <input type="number" class="form-control" name="total" required>
+  </div>
+  <button type="submit" class="btn btn-primary w-100">Save</button>
+</form>
+{% endblock %}
