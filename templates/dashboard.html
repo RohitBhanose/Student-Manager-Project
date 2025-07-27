@@ -2,74 +2,83 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4">Dashboard</h2>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-white">Dashboard</h2>
+    <div>
+      <a href="/add_attendance" class="btn btn-outline-info me-2 shadow-glow">+ Attendance</a>
+      <a href="/add_cgpa" class="btn btn-outline-success me-2 shadow-glow">+ CGPA</a>
+      <a href="/add_assignment" class="btn btn-outline-warning shadow-glow">+ Assignment</a>
+    </div>
+  </div>
 
-<!-- Add buttons -->
-<div class="d-flex justify-content-end mb-3">
-  <a href="/add_attendance" class="btn btn-primary me-2">+ Attendance</a>
-  <a href="/add_cgpa" class="btn btn-success me-2">+ CGPA</a>
-  <a href="/add_assignment" class="btn btn-warning">+ Assignment</a>
+  <div class="row">
+    <!-- Attendance -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white shadow rounded-4">
+        <div class="card-header bg-primary text-white fw-bold rounded-top">Attendance</div>
+        <ul class="list-group list-group-flush">
+          {% for a in attendance %}
+          <li class="list-group-item d-flex justify-content-between bg-dark text-white">
+            <span>{{ a.subject }}</span>
+            <span>{{ a.attended }}/{{ a.total_classes }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- CGPA -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white shadow rounded-4">
+        <div class="card-header bg-success text-white fw-bold rounded-top">CGPA</div>
+        <ul class="list-group list-group-flush">
+          {% for c in cgpa %}
+          <li class="list-group-item bg-dark text-white">Sem {{ c.semester }}: {{ c.gpa }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Assignments -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white shadow rounded-4">
+        <div class="card-header bg-warning text-dark fw-bold rounded-top">Assignments</div>
+        <ul class="list-group list-group-flush">
+          {% for a in assignments %}
+          <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+            <div>
+              <strong>{{ a.title }}</strong><br>
+              <small>Due: {{ a.deadline }}</small>
+            </div>
+            <div class="d-flex align-items-center">
+              {% if a.submitted %}
+              <span class="text-success me-3" title="Submitted">✔</span>
+              {% else %}
+              <span class="text-danger me-3" title="Not Submitted">✘</span>
+              {% endif %}
+              <form method="POST" action="/delete_assignment/{{ a.id }}">
+                <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
+                  🗑
+                </button>
+              </form>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="row">
-  <!-- Attendance Card -->
-  <div class="col-md-4">
-    <div class="card mb-3 shadow-sm">
-      <div class="card-header bg-primary text-white">Attendance</div>
-      <ul class="list-group list-group-flush">
-        {% for a in attendance %}
-        <li class="list-group-item d-flex justify-content-between">
-          <span>{{ a.subject }}</span>
-          <span>{{ a.attended }}/{{ a.total_classes }}</span>
-        </li>
-        {% else %}
-        <li class="list-group-item text-muted">No records yet.</li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
+<style>
+  .shadow-glow {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+    transition: 0.3s ease;
+  }
 
-  <!-- CGPA Card -->
-  <div class="col-md-4">
-    <div class="card mb-3 shadow-sm">
-      <div class="card-header bg-success text-white">CGPA</div>
-      <ul class="list-group list-group-flush">
-        {% for c in cgpa %}
-        <li class="list-group-item">Sem {{ c.semester }}: {{ c.gpa }}</li>
-        {% else %}
-        <li class="list-group-item text-muted">No records yet.</li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-
-  <!-- Assignments Card -->
-  <div class="col-md-4">
-    <div class="card mb-3 shadow-sm">
-      <div class="card-header bg-warning">Assignments</div>
-      <ul class="list-group list-group-flush">
-        {% for a in assignments %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
-            <strong>{{ a.title }}</strong><br>
-            <small class="text-muted">Due: {{ a.deadline }}</small>
-          </div>
-          <div class="d-flex align-items-center">
-            {% if a.submitted %}
-              <span class="text-success fs-4 me-3">&#10003;</span>
-            {% else %}
-              <span class="text-danger fs-4 me-3">&#10007;</span>
-            {% endif %}
-            <form action="{{ url_for('delete_assignment', assignment_id=a.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this assignment?');">
-              <button type="submit" class="btn btn-sm btn-outline-danger">🗑️</button>
-            </form>
-          </div>
-        </li>
-        {% else %}
-        <li class="list-group-item text-muted">No assignments yet.</li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-</div>
+  .shadow-glow:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.9);
+  }
+</style>
 {% endblock %}
